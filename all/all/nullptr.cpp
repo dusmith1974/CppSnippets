@@ -47,7 +47,7 @@ void DoWork()
 	fn(0);
 	fn(NULL);
 
-	// Would call nullptr_t, void* or int*
+	// Would call nullptr_t, void* or int* (in that order)
 	// nullptr_t is convertible to any pointer, but not to any integral value
 	fn(nullptr);
 }

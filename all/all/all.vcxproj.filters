@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="SQL">
-      <UniqueIdentifier>{07e04932-7fab-4976-a209-273db09b9c68}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -47,13 +44,5 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\SQL\chess.sql">
-      <Filter>SQL</Filter>
-    </None>
-    <None Include="..\..\..\SQL\DDL\CREATE_TABLE.sql">
-      <Filter>SQL</Filter>
-    </None>
   </ItemGroup>
 </Project>
