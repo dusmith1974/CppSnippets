@@ -30,15 +30,21 @@
     <ClInclude Include="A.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="nullptr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="all.cpp">
+    <ClCompile Include="A.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A.cpp">
+    <ClCompile Include="nullptr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
