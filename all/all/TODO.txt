@@ -1,0 +1,8 @@
+josuttis
+meyers
+widdom
+
+big3 big5
+pimpl
+maintain vs2012 equiv
+
