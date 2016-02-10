@@ -6,6 +6,8 @@
 #include "nullptr.h"
 
 
+// mymain
+// mymain tt
 int main()
 {
 	DoWork();
