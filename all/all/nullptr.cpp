@@ -1,23 +1,24 @@
 #include <cstddef>
+#include <cstdint>
 
 void fn(int n)
 {
-	(void*)n;
+	(void)n;
 }
 
 void fn(int* n)
 {
-	(void*)n;
+	(void)n;
 }
 
 void fn(void* n)
 {
-	(void*)n;
+	(void)n;
 }
 
 void fn(nullptr_t n)
 {
-	(void*)n;
+	(void)n;
 }
 
 #pragma warning(push)
@@ -45,10 +46,15 @@ void DoWork()
 
 	// both call fn(int) NULL is just 0
 	fn(0);
-	fn(NULL);
+	fn(static_cast<int>(NULL)); // cast req'd for gcc (which has internal NULL type)
 
 	// Would call nullptr_t, void* or int* (in that order)
 	// nullptr_t is convertible to any pointer, but not to any integral value
 	fn(nullptr);
 }
 #pragma warning(pop)
+
+int main(void)
+{
+    DoWork();
+}
