@@ -54,7 +54,4 @@ void DoWork()
 }
 #pragma warning(pop)
 
-int main(void)
-{
-    DoWork();
-}
+//int main(void) { DoWork(); }
