@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+namespace p98
+{
+
 struct Widget::Impl
 {
     std::string name;
@@ -27,3 +30,5 @@ Widget::DoWork()
     pImpl->data = { 1.0, 2.0 };
     pImpl->g1;
 }
+
+}  // namespace p98

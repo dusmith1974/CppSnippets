@@ -6,3 +6,4 @@ big3 big5
 pimpl
 maintain vs2012 equiv
 
+copy and swap with pimpl (effc++#25)
