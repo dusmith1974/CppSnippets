@@ -54,4 +54,6 @@ void DoWork()
 }
 #pragma warning(pop)
 
-//int main(void) { DoWork(); }
+#ifdef SF  // single file
+int main(void) { DoWork(); }
+#endif
