@@ -2,21 +2,19 @@
 
 namespace p98
 {
-
 class Widget
 {
 public:
-    Widget();
-    ~Widget();
+	Widget();
+	~Widget();
 
-    // TODO(smitdu)
-    // add cctor and casop (based on c11)
+	// TODO(smitdu)
+	// add cctor and casop (based on c11)
 
-    DoWork();
+	void DoWork();
 
 private:
-    struct Impl;
-    struct Impl* pImpl;
+	struct Impl;
+	struct Impl* pImpl;
 };
-
 }  // namespace p98

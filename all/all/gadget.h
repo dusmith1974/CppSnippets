@@ -3,9 +3,9 @@
 class Gadget
 {
 public:
-    Gadget();
-    ~Gadget();
+	Gadget();
+	~Gadget();
 
-    int m_iX;
-    int m_iY;    
+	int m_iX;
+	int m_iY;
 };

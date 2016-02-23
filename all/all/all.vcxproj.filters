@@ -22,26 +22,20 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="A.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="nullptr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gadget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pimpl.h">
+    <ClInclude Include="pimpl98.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pimpl98.h">
+    <ClInclude Include="pimpl11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="A.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="nullptr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,7 +45,16 @@
     <ClCompile Include="gadget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pimpl.cpp">
+    <ClCompile Include="CopyAndSwap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pimpl11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pimpl98.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pimplMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

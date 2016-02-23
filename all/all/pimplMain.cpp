@@ -1,15 +1,20 @@
 #include "pimpl98.h"
 #include "pimpl11.h"
 
-// Use copy and swap with pImpl see EffC++#25
+// Use copy and swap with pImpl see EffC++#25,29
 
-int main()
+namespace pimpl
 {
-    p98::Widget w;
-    p11::Widget w11;
+void DoWork()
+{
+	p98::Widget w;
+	p11::Widget w11;
 
-    w.DoWork();
-    //w11.DoWork();
- 
-    return 0;
+	w.DoWork();
+	//w11.DoWork();
 }
+
+#ifdef SF
+int main() { DoWork(); }
+#endif
+}  // namespace pimpl

@@ -1,6 +1,8 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace np
+{
 void fn(int n)
 {
 	(void)n;
@@ -21,8 +23,6 @@ void fn(nullptr_t n)
 	(void)n;
 }
 
-#pragma warning(push)
-#pragma warning(disable:4700)
 void DoWork()
 {
 	int n = 5;
@@ -52,6 +52,8 @@ void DoWork()
 	// nullptr_t is convertible to any pointer, but not to any integral value
 	fn(nullptr);
 }
-#pragma warning(pop)
 
-//int main(void) { DoWork(); }
+#ifdef SF
+int main(void) { DoWork(); }
+#endif
+}  // namespace np
