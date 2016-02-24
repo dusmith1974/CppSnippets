@@ -146,6 +146,7 @@
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CopyAndSwap.h" />
     <ClInclude Include="gadget.h" />
     <ClInclude Include="nullptr.h" />
     <ClInclude Include="pimpl11.h" />

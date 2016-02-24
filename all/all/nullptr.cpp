@@ -23,6 +23,11 @@ void fn(nullptr_t n)
 	(void)n;
 }
 
+void fn(intptr_t* t)
+{
+	(void)t;
+}
+
 void DoWork()
 {
 	int n = 5;
@@ -46,6 +51,15 @@ void DoWork()
 
 	// both call fn(int) NULL is just 0
 	fn(0);
+	fn(NULL);
+
+	intptr_t* t = 0;
+	fn(t);
+
+	long x = 34L;
+	fn(static_cast<intptr_t>(x));
+	fn(reinterpret_cast<intptr_t*>(x));
+
 	fn(static_cast<int>(NULL)); // cast req'd for gcc (which has internal NULL type)
 
 	// Would call nullptr_t, void* or int* (in that order)

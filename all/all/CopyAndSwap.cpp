@@ -1,6 +1,10 @@
 #include <algorithm> // std::copy
 #include <cstddef> // std::size_t
 
+#include "CopyAndSwap.h"
+
+// http://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+
 namespace CopyAndSwap
 {
 class dumb_array
@@ -30,10 +34,34 @@ public:
 		delete[] mArray;
 	}
 
+	friend void swap(dumb_array& first, dumb_array& second) // nothrow
+	{
+		// enable ADL (not necessary in our case, but good practice)
+		using std::swap;
+
+		// by swapping the members of two classes,
+		// the two classes are effectively swapped
+		swap(first.mSize, second.mSize);
+		swap(first.mArray, second.mArray);
+	}
+
+	dumb_array& operator=(dumb_array other)
+	{
+		swap(*this, other);
+		return *this;
+	}
+
 private:
 	std::size_t mSize;
 	int* mArray;
 };
+
+void DoWork()
+{
+	dumb_array A(5);
+	dumb_array B;
+	B = A;
+}
 
 #ifdef SF
 int main()
