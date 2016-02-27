@@ -51,6 +51,12 @@ public:
 		return *this;
 	}
 
+	dumb_array(dumb_array&& other)
+		: dumb_array() // initialize via default constructor, C++11 only
+	{
+		swap(*this, other);
+	}
+
 private:
 	std::size_t mSize;
 	int* mArray;

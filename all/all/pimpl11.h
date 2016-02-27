@@ -16,6 +16,12 @@ public:
 	Widget(Widget&& rhs) noexcept;
 	Widget& operator=(Widget&& rhs) noexcept;
 
+	friend void swap(Widget& first, Widget& second)
+	{
+		using std::swap;
+		swap(first.pImpl, second.pImpl);
+	}
+
 private:
 	struct Impl;
 	std::unique_ptr<Impl> pImpl;
