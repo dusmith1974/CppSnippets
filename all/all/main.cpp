@@ -1,8 +1,9 @@
 #include "nullptr.h"
 #include "CopyAndSwap.h"
+#include "algos.h"
 
 int main()
 {
-	np::DoWork();
-	CopyAndSwap::DoWork();
+	algos::DoWork();
+	//CopyAndSwap::DoWork();
 }

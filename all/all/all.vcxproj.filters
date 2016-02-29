@@ -37,6 +37,9 @@
     <ClInclude Include="CopyAndSwap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="algos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="nullptr.cpp">
@@ -58,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pimplMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="algos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

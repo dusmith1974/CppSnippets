@@ -146,6 +146,7 @@
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="algos.h" />
     <ClInclude Include="CopyAndSwap.h" />
     <ClInclude Include="gadget.h" />
     <ClInclude Include="nullptr.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="algos.cpp" />
     <ClCompile Include="CopyAndSwap.cpp" />
     <ClCompile Include="gadget.cpp" />
     <ClCompile Include="main.cpp" />
