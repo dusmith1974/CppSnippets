@@ -1,0 +1,25 @@
+rn mainwindow
+dir/file parent child
+headers, size, rw, type
+sortable
+filtering index (ro files)
+context menu (diff etc)
+ro files grey
+toolbar
+statusbar panels
+tab order/keyb accel
+backup location, freq,
+checkpoint, restore to checkpoint/date
+diff to checkpoint/date
+revert to checkpoint/date/head/tail
+ignore folders/extensions
+qsettings
+stream selector
+memcheck valgrind linux build
+cleartool cmds
+logging
+prog args
+incremental search
+pattern matching filter (sts bar panel, rgx)
+goto filename (sts bar panel)
+help file/context

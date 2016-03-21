@@ -23,3 +23,6 @@ HEADERS  += mainwindow.h \
     filesystem.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES += \
+    todo.txt
