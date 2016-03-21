@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QStandardItemModel>
 #include <QTreeView>
+#include <QLayout>
 
 #include "filesystem.h"
 
@@ -25,6 +26,12 @@ MainWindow::MainWindow(QWidget* parent) :
     m_Ui(new Ui::MainWindow)
 {
     m_Ui->setupUi(this);
+    QWidget* window = new QWidget;
+    QHBoxLayout* layout = new QHBoxLayout;
+    layout->addWidget(m_Ui->treeView);
+    window->setLayout(layout);
+    window->show();
+    //m_Ui->MainWindow
 }
 
 MainWindow::~MainWindow()
