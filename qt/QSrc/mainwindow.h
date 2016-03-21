@@ -24,7 +24,12 @@ class MainWindow : public QMainWindow
     void on_treeView_clicked(const QModelIndex& index);
     void on_treeView_activated(const QModelIndex& index);
 
-  private:
+    void on_actionExit_triggered();
+
+
+    void on_checkBox_clicked(bool checked);
+
+private:
     void clicked(const QModelIndex& index);
 
     Ui::MainWindow* m_Ui;

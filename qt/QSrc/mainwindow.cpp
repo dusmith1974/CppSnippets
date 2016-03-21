@@ -26,11 +26,11 @@ MainWindow::MainWindow(QWidget* parent) :
     m_Ui(new Ui::MainWindow)
 {
     m_Ui->setupUi(this);
-    QWidget* window = new QWidget;
-    QHBoxLayout* layout = new QHBoxLayout;
-    layout->addWidget(m_Ui->treeView);
-    window->setLayout(layout);
-    window->show();
+    //QWidget* window = new QWidget;
+    //QHBoxLayout* layout = new QHBoxLayout;
+    //layout->addWidget(m_Ui->treeView);
+    //window->setLayout(layout);
+    //window->show();
     //m_Ui->MainWindow
 }
 
@@ -43,6 +43,7 @@ MainWindow::~MainWindow()
 void MainWindow::init()
 {
     m_Model = new QStandardItemModel;
+
     m_Model->setColumnCount(3);
     QStandardItem* parentItem = m_Model->invisibleRootItem();
     PtrPath pPath = OpenDirectory(".");
@@ -90,4 +91,14 @@ void MainWindow::on_treeView_clicked(const QModelIndex& index)
 
 void MainWindow::on_treeView_activated(const QModelIndex& index)
 {
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    qApp->exit();
+}
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+
 }
