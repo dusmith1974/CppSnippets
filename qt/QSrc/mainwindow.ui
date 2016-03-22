@@ -39,8 +39,11 @@
     <item>
      <widget class="QTreeView" name="treeView">
       <property name="headerHidden">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
+      <attribute name="headerVisible">
+       <bool>true</bool>
+      </attribute>
      </widget>
     </item>
    </layout>

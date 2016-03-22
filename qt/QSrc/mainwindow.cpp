@@ -42,9 +42,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    m_Model = new QStandardItemModel;
+    QStringList headers;
+    headers << "Filename" << "Size" << "Type";
 
+    m_Model = new QStandardItemModel;
     m_Model->setColumnCount(3);
+    m_Model->setHorizontalHeaderLabels(headers);
+
     QStandardItem* parentItem = m_Model->invisibleRootItem();
     PtrPath pPath = OpenDirectory(".");
 
