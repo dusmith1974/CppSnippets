@@ -1,12 +1,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include <QDebug>
 #include <QStandardItemModel>
 #include <QTreeView>
 #include <QLayout>
 
 #include "filesystem.h"
+
+using namespace std;
+
+using namespace boost::filesystem;
+using namespace boost::posix_time;
 
 enum Roles
 {
@@ -40,13 +47,31 @@ MainWindow::~MainWindow()
     delete m_Model;
 }
 
+QString HumanFileSize(uintmax_t iFileSize)
+{
+    float num = iFileSize;
+    QStringList list;
+    list << "KB" << "MB" << "GB" << "TB";
+
+    QStringListIterator iter(list);
+    QString unit("bytes");
+
+    while (num >= 1024.0 && iter.hasNext())
+    {
+        unit = iter.next();
+        num /= 1024.0;
+    }
+
+    return QString().setNum(num, 'f', 2) + " " + unit;
+}
+
 void MainWindow::init()
 {
     QStringList headers;
-    headers << "Filename" << "Size" << "Type";
+    headers << "Name" << "Date modified" << "Type" << "Size" << "";
 
     m_Model = new QStandardItemModel;
-    m_Model->setColumnCount(3);
+    m_Model->setColumnCount(headers.size());
     m_Model->setHorizontalHeaderLabels(headers);
 
     QStandardItem* parentItem = m_Model->invisibleRootItem();
@@ -58,10 +83,52 @@ void MainWindow::init()
 
         if (pEntries)
         {
-            for (const auto& entry : *pEntries)
+            char szLastWriteTime[20];
+
+            for (const directory_entry& entry : *pEntries)
             {
+                bool bRegular = is_regular_file(entry.path());
+
+                time_t tm = last_write_time(entry.path());
+                strftime(szLastWriteTime, sizeof(szLastWriteTime), "%Y-%m-%d %H:%M", localtime(&tm));
+
+                QString strFilename = QString::fromStdString(entry.path().filename().string());
+                QString strLastWriteTime(szLastWriteTime);
+                QString strType;
+
+                if (bRegular)
+                {
+                    strType = QString::fromStdString(entry.path().extension().string());
+
+                    if (strType.isEmpty())
+                    {
+                        strType = "File";
+                    }
+                }
+                else
+                {
+                    if (is_directory(entry.path()))
+                    {
+                        strType = "File folder";
+                    }
+                }
+
+                QString strFileSize;
+
+                if (bRegular)
+                {
+                    strFileSize = HumanFileSize(file_size(entry.path()));
+                }
+
                 QList<QStandardItem*> items;
-                items.append(new QStandardItem(QString::fromStdString(entry.path().string())));
+                items.append(new QStandardItem(strFilename));
+                items.append(new QStandardItem(strLastWriteTime));
+                items.append(new QStandardItem(strType));
+
+                auto item = new QStandardItem(strFileSize);
+                item->setTextAlignment(Qt::AlignRight);
+                items.append(item);
+
                 parentItem->appendRow(items);
             }
 
