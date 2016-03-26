@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include <memory>
+
+#include <boost/filesystem.hpp>
+
 class QStandardItemModel;
 
 namespace Ui
@@ -34,6 +38,7 @@ private:
 
     Ui::MainWindow* m_Ui;
     QStandardItemModel* m_Model;
+    std::unique_ptr<boost::filesystem::path> m_pRootPath;
 };
 
 #endif // MAINWINDOW_H
