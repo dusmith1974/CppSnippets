@@ -11,9 +11,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QSrc
 TEMPLATE = app
 
-INCLUDEPATH += C:/sw/boost/
-LIBS += "-LC:/sw/boost/stage/lib/"
+INCLUDEPATH += $$PWD/../../../boost/
+LIBS += -L$$PWD/../../../boost/stage/lib/
 
+# req'd for OSX
+QMAKE_CXXFLAGS += -stdlib=libc++
+CONFIG += c++14
+
+LIBS += -lboost_system
+LIBS += -lboost_filesystem
 
 SOURCES += main.cpp\
         mainwindow.cpp \

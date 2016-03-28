@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <sstream>
 
 #include <boost/algorithm/string.hpp>
@@ -20,7 +21,7 @@ PtrPath OpenDirectory(const char* szDir)
         return nullptr;
     }
 
-    std::unique_ptr<boost::filesystem::path> pPath = make_unique<boost::filesystem::path>(szDir);
+    auto pPath = std::make_unique<path>(szDir);
 
     try
     {

@@ -107,7 +107,8 @@ void MainWindow::init()
     m_Model->setHorizontalHeaderLabels(headers);
 
     QStandardItem* pParentDirItem = m_Model->invisibleRootItem();
-    m_pRootPath = OpenDirectory("C:\\folder1");
+    //m_pRootPath = OpenDirectory("C:\\folder1");
+    m_pRootPath = OpenDirectory(".");
 
     if (m_pRootPath)
     {

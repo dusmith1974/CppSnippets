@@ -1,2 +1,9 @@
 bootstrap
 b2 --toolset=msvc-14.0 architecture=x86 address-model=64 --build-type=complete
+
+OSX
+./b2 toolset=clang --without-mpi cxxflags="-arch i386 -arch x86_64 -fvisibility=hidden -fvisibility-inlines-hidden -std=c++11 -stdlib=libc++ -ftemplate-depth=512" linkflags="-stdlib=libc++" link=static stage
+
+qt .pro (osx)
+QMAKE_CXXFLAGS += -stdlib=libc++
+CONFIG += c++14
