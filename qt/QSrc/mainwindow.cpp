@@ -105,9 +105,11 @@ void MainWindow::init()
     m_Model->setColumnCount(headers.size());
     m_Model->setHorizontalHeaderLabels(headers);
 
-    QStandardItem* pParentDirItem = m_Model->invisibleRootItem();
+    QStandardItem* pLastDirItem = m_Model->invisibleRootItem();
+    //QStandardItem* pLastDirItem = nullptr;
+
     //m_pRootPath = OpenDirectory("C:\\folder1");
-    m_pRootPath = OpenDirectory(".");
+    m_pRootPath = OpenDirectory("/Users/smithdu/test");
 
     if (m_pRootPath)
     {
@@ -158,17 +160,18 @@ void MainWindow::init()
                 item->setTextAlignment(Qt::AlignRight);
                 items.append(item);
 
+                // todo, add to curdir if direct child, if not direct child then pop dir and retry until root. short circuit with non-direct child.
                 if (!pPrevItem)
                 {
-                    pParentDirItem->appendRow(items);
-                    pParentDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
+                    pLastDirItem->appendRow(items);
+                    pLastDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
                 }
                 else
                 {
                     directory_entry* pPrevDirEntry = pPrevItem->data(kDirEntryRole).value<directory_entry*>();
 
-                    pParentDirItem->appendRow(items);
-                    pParentDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
+                    pLastDirItem->appendRow(items);
+                    pLastDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
                     if (PathDirectlyContainsFile(pPrevDirEntry->path(), entry.path()))
                     {
                         //pParentDirItem = m_Model->item(m_Model->rowCount() - 1);
@@ -177,7 +180,7 @@ void MainWindow::init()
 
                 if (is_directory(entry.path()))
                 {
-                    pPrevItem = pParentDirItem;
+                    pLastDirItem = items.first();
                 }
             }
 
