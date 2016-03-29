@@ -21,7 +21,6 @@ enum Roles
 };
 
 Q_DECLARE_METATYPE(directory_entry*)
-Q_DECLARE_METATYPE(const directory_entry*)
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -120,7 +119,7 @@ void MainWindow::init()
 
             QStandardItem* pPrevItem = nullptr;
 
-            for (const directory_entry& entry : *pEntries)
+            for (directory_entry& entry : *pEntries)
             {
                 bool bRegularFile = is_regular_file(entry.path());
 
@@ -163,8 +162,6 @@ void MainWindow::init()
                 {
                     pParentDirItem->appendRow(items);
                     pParentDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
-                    directory_entry* pp = pParentDirItem->data(kDirEntryRole).value<directory_entry*>();
-                    (void)pp;
                 }
                 else
                 {
@@ -174,7 +171,7 @@ void MainWindow::init()
                     pParentDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
                     if (PathDirectlyContainsFile(pPrevDirEntry->path(), entry.path()))
                     {
-                        //pParentDirItem = items.first();
+                        //pParentDirItem = m_Model->item(m_Model->rowCount() - 1);
                     }
                 }
 
