@@ -6,14 +6,17 @@
 
 #include <boost/filesystem.hpp>
 
-using SetOfString = std::set<std::string>;
-using PtrSetString = std::unique_ptr<SetOfString>;
+using SetString = std::set<std::string>;
+using PtrSetString = std::unique_ptr<SetString>;
 
-using VecOfEntry = std::vector<boost::filesystem::directory_entry>;
-using PtrVecEntry = std::unique_ptr<VecOfEntry>;
+using VecEntry = std::vector<boost::filesystem::directory_entry>;
+using PtrVecEntry = std::unique_ptr<VecEntry>;
+
+using VecPath = std::vector<boost::filesystem::path>;
+using PtrVecPath = std::unique_ptr<VecPath>;
 
 using Path = boost::filesystem::path;
 using PtrPath = std::unique_ptr<Path>;
 
 std::unique_ptr<boost::filesystem::path> OpenDirectory(const char* szDir);
-PtrVecEntry FindAllEntries(PtrPath& path);
+PtrVecPath FindAllPaths(PtrPath& path);

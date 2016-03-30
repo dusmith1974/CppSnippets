@@ -20,7 +20,7 @@ enum Roles
     kDirEntryRole = Qt::UserRole + 1
 };
 
-Q_DECLARE_METATYPE(directory_entry*)
+Q_DECLARE_METATYPE(path*)
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -113,42 +113,42 @@ void MainWindow::init()
 
     if (m_pRootPath)
     {
-        PtrVecEntry pEntries = FindAllEntries(m_pRootPath);
+        PtrVecPath pPaths = FindAllPaths(m_pRootPath);
 
-        if (pEntries)
+        if (pPaths)
         {
             char szLastWriteTime[20];
 
             QStandardItem* pPrevItem = nullptr;
 
-            for (directory_entry& entry : *pEntries)
+            for (path& iterPath : *pPaths)
             {
-                bool bRegularFile = is_regular_file(entry.path());
+                bool bRegularFile = is_regular_file(iterPath);
 
-                time_t tm = last_write_time(entry.path());
+                time_t tm = last_write_time(iterPath);
                 strftime(szLastWriteTime, sizeof(szLastWriteTime), "%Y-%m-%d %H:%M", localtime(&tm));
 
-                QString strFilename = QString::fromStdString(entry.path().filename().string());
+                QString strFilename = QString::fromStdString(iterPath.filename().string());
                 QString strLastWriteTime(szLastWriteTime);
                 QString strType;
                 QString strFileSize;
 
                 if (bRegularFile)
                 {
-                    strType = QString::fromStdString(entry.path().extension().string());
+                    strType = QString::fromStdString(iterPath.extension().string());
 
                     if (strType.isEmpty())
                     {
                         strType = "File";
                     }
 
-                    strFileSize = HumanFileSize(file_size(entry.path()));
+                    strFileSize = HumanFileSize(file_size(iterPath));
                 }
 
                 QString strAttrib = QString("%1%2%3").arg(
-                                        (is_directory(entry.path())) ? "d" : "-",
-                                        (entry.status().permissions() & owner_read) ? "r" : "-",
-                                        (entry.status().permissions() & owner_write) ? "w" : "-");
+                            (is_directory(iterPath)) ? "d" : "-",
+                            (status(iterPath).permissions() & owner_read) ? "r" : "-",
+                            (status(iterPath).permissions() & owner_write) ? "w" : "-");
 
                 QList<QStandardItem*> items;
                 items.append(new QStandardItem(strFilename));
@@ -161,64 +161,71 @@ void MainWindow::init()
                 items.append(item);
 
                 // todo, add to curdir if direct child, if not direct child then pop dir and retry until root. short circuit with non-direct child.
+                items.first()->setData(QVariant::fromValue(&iterPath), kDirEntryRole);
+
                 if (!pPrevItem)
                 {
                     pLastDirItem->appendRow(items);
-                    pLastDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
+                    pLastDirItem->setData(QVariant::fromValue(m_pRootPath.get()), kDirEntryRole);
                 }
                 else
                 {
-                    directory_entry* pPrevDirEntry = pPrevItem->data(kDirEntryRole).value<directory_entry*>();
-
-                    pLastDirItem->appendRow(items);
-                    pLastDirItem->setData(QVariant::fromValue(&entry), kDirEntryRole);
-                    if (PathDirectlyContainsFile(pPrevDirEntry->path(), entry.path()))
+                    bool bAddedItem = false;
+                    path* pPrevPath = pLastDirItem->data(kDirEntryRole).value<path*>();
+                    do
                     {
-                        //pParentDirItem = m_Model->item(m_Model->rowCount() - 1);
-                    }
+                        if (!pLastDirItem)
+                        {
+                            pLastDirItem = m_Model->invisibleRootItem();
+                            pLastDirItem->appendRow(items);
+                            pLastDirItem->setData(QVariant::fromValue(m_pRootPath.get()), kDirEntryRole);
+                            pPrevPath = pLastDirItem->data(kDirEntryRole).value<path*>();
+                            bAddedItem = true;
+                        }
+                        else
+                        {
+                            if (PathDirectlyContainsFile(*pPrevPath, iterPath))
+                            {
+                                pLastDirItem->appendRow(items);
+                                bAddedItem = true;
+                            }
+                            else
+                            {
+                                pLastDirItem = pLastDirItem->parent();
+                                if (pLastDirItem)
+                                {
+                                    pPrevPath = pLastDirItem->data(kDirEntryRole).value<path*>();
+                                }
+                            }
+                        }
+                    } while (pLastDirItem != m_Model->invisibleRootItem() && !bAddedItem);
                 }
 
-                if (is_directory(entry.path()))
+                if (is_directory(iterPath))
                 {
                     pLastDirItem = items.first();
                 }
+
+                pPrevItem = items.first();
             }
-
-//            for (int i = 0; i < 4; ++i)
-//            {
-//                QStandardItem* item = new QStandardItem(QString("item %0").arg(i));
-//                QStandardItem* item2 = new QStandardItem(QString("ReadWrite"));
-//                QStandardItem* item3 = new QStandardItem(QString("Filename"));
-//                QList<QStandardItem*> items;
-//                items.append(item);
-//                items.append(item2);
-//                items.append(item3);
-//                FileSystemInfo* p = new FileSystemInfo;
-//                p->mode = i;
-//                p->name = "A File";
-//                item->setData(QVariant::fromValue(p), kFileSystemInfoRole);
-//                parentItem->appendRow(items);
-//                parentItem = item;
-//            }
         }
+
+        m_Ui->treeView->setAlternatingRowColors(true);
+        m_Ui->treeView->setAnimated(true);
+        //m_Ui->treeView->setSortingEnabled(true);
+
+        m_Ui->treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
+        //m_Ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
+        //m_Ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+        //m_Ui->treeView->sortByColumn(0, Qt::AscendingOrder);
+
+        m_Ui->treeView->setModel(m_Model);
     }
-
-    m_Ui->treeView->setAlternatingRowColors(true);
-    m_Ui->treeView->setAnimated(true);
-    //m_Ui->treeView->setSortingEnabled(true);
-
-    m_Ui->treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
-    //m_Ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-    //m_Ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
-    //m_Ui->treeView->sortByColumn(0, Qt::AscendingOrder);
-
-    m_Ui->treeView->setModel(m_Model);
 }
 
 void MainWindow::on_treeView_clicked(const QModelIndex& index)
 {
     QStandardItem* item = m_Model->itemFromIndex(index);
-    //FileSystemInfo* p = index.data(kFileSystemInfoRole).value<FileSystemInfo*>();
 }
 
 void MainWindow::on_treeView_activated(const QModelIndex& index)

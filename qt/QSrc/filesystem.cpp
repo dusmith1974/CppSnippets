@@ -38,15 +38,15 @@ PtrPath OpenDirectory(const char* szDir)
     return pPath;
 }
 
-PtrVecEntry FindAllEntries(PtrPath& pPath)
+PtrVecPath FindAllPaths(PtrPath& pPath)
 {
-    PtrVecEntry pEntries = make_unique<VecOfEntry>();
+    PtrVecPath pPaths = make_unique<VecPath>();
 
     try
     {
         for (directory_entry& entry : recursive_directory_iterator(*pPath))
         {
-            pEntries->push_back(entry);
+            pPaths->push_back(entry.path());
         }
     }
     catch (const filesystem_error& ex)
@@ -54,7 +54,7 @@ PtrVecEntry FindAllEntries(PtrPath& pPath)
         qInfo() << ex.what() << endl;
     }
 
-    return pEntries;
+    return pPaths;
 }
 
 template<typename T>
@@ -70,7 +70,7 @@ void PrintCollection(const T& coll)
 
 PtrSetString FindExtensions(path& p)
 {
-    auto setExtensions = make_unique<SetOfString>();
+    auto setExtensions = make_unique<SetString>();
 
     try
     {
@@ -92,7 +92,7 @@ PtrSetString FindExtensions(path& p)
 
 PtrVecEntry FindWritableFiles(path& p)
 {
-    auto vecFiles = make_unique<VecOfEntry>();
+    auto vecFiles = make_unique<VecEntry>();
 
     try
     {
