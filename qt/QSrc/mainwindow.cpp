@@ -105,11 +105,8 @@ void MainWindow::init()
     m_Model->setColumnCount(headers.size());
     m_Model->setHorizontalHeaderLabels(headers);
 
-    QStandardItem* pLastDirItem = m_Model->invisibleRootItem();
-    //QStandardItem* pLastDirItem = nullptr;
-
     //m_pRootPath = OpenDirectory("C:\\folder1");
-    m_pRootPath = OpenDirectory("/Users/smithdu/test");
+    m_pRootPath = OpenDirectory("/Users/smithdu/sw/boost");
 
     if (m_pRootPath)
     {
@@ -119,7 +116,8 @@ void MainWindow::init()
         {
             char szLastWriteTime[20];
 
-            QStandardItem* pPrevItem = nullptr;
+            m_Model->invisibleRootItem()->setData(QVariant::fromValue(m_pRootPath.get()), kDirEntryRole);
+            QStandardItem* pLastDirItem = m_Model->invisibleRootItem();
 
             for (path& iterPath : *pPaths)
             {
@@ -155,71 +153,43 @@ void MainWindow::init()
                 items.append(new QStandardItem(strLastWriteTime));
                 items.append(new QStandardItem(strType));
                 items.append(new QStandardItem(strAttrib));
-
                 auto item = new QStandardItem(strFileSize);
                 item->setTextAlignment(Qt::AlignRight);
                 items.append(item);
-
-                // todo, add to curdir if direct child, if not direct child then pop dir and retry until root. short circuit with non-direct child.
                 items.first()->setData(QVariant::fromValue(&iterPath), kDirEntryRole);
 
-                if (!pPrevItem)
+                bool bAddedItem = false;
+
+                while (pLastDirItem && !bAddedItem)
                 {
-                    pLastDirItem->appendRow(items);
-                    pLastDirItem->setData(QVariant::fromValue(m_pRootPath.get()), kDirEntryRole);
-                }
-                else
-                {
-                    bool bAddedItem = false;
-                    path* pPrevPath = pLastDirItem->data(kDirEntryRole).value<path*>();
-                    do
+                    if (PathDirectlyContainsFile(*pLastDirItem->data(kDirEntryRole).value<path*>(), iterPath))
                     {
-                        if (!pLastDirItem)
-                        {
-                            pLastDirItem = m_Model->invisibleRootItem();
-                            pLastDirItem->appendRow(items);
-                            pLastDirItem->setData(QVariant::fromValue(m_pRootPath.get()), kDirEntryRole);
-                            pPrevPath = pLastDirItem->data(kDirEntryRole).value<path*>();
-                            bAddedItem = true;
-                        }
-                        else
-                        {
-                            if (PathDirectlyContainsFile(*pPrevPath, iterPath))
-                            {
-                                pLastDirItem->appendRow(items);
-                                bAddedItem = true;
-                            }
-                            else
-                            {
-                                pLastDirItem = pLastDirItem->parent();
-                                if (pLastDirItem)
-                                {
-                                    pPrevPath = pLastDirItem->data(kDirEntryRole).value<path*>();
-                                }
-                            }
-                        }
-                    } while (pLastDirItem != m_Model->invisibleRootItem() && !bAddedItem);
+                        pLastDirItem->appendRow(items);
+                        bAddedItem = true;
+                    }
+                    else
+                    {
+                        pLastDirItem = (pLastDirItem->parent()) ? pLastDirItem->parent() : m_Model->invisibleRootItem();
+                    }
                 }
 
                 if (is_directory(iterPath))
                 {
                     pLastDirItem = items.first();
                 }
-
-                pPrevItem = items.first();
             }
+
+            m_Ui->treeView->setAlternatingRowColors(true);
+            m_Ui->treeView->setAnimated(true);
+            //m_Ui->treeView->setSortingEnabled(true);
+
+            m_Ui->treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
+            //m_Ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
+            //m_Ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+            //m_Ui->treeView->sortByColumn(0, Qt::AscendingOrder);
+
+            m_Ui->treeView->setModel(m_Model);
         }
-
-        m_Ui->treeView->setAlternatingRowColors(true);
-        m_Ui->treeView->setAnimated(true);
-        //m_Ui->treeView->setSortingEnabled(true);
-
-        m_Ui->treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
-        //m_Ui->treeView->setContextMenuPolicy(Qt::ActionsContextMenu);
-        //m_Ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
-        //m_Ui->treeView->sortByColumn(0, Qt::AscendingOrder);
-
-        m_Ui->treeView->setModel(m_Model);
     }
 }
 
