@@ -1,10 +1,10 @@
-#include "mainwindow.h"
+#include "QSrcWnd.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    QSrcWnd w;
     w.show();
     w.init();
 

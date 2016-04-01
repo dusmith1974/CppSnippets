@@ -22,11 +22,12 @@ LIBS += -lboost_system
 LIBS += -lboost_filesystem
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    filesystem.cpp
+    filesystem.cpp \
+    QSrcWnd.cpp
 
-HEADERS  += mainwindow.h \
-    filesystem.h
+HEADERS  += \
+    filesystem.h \
+    QSrcWnd.h
 
 FORMS    += mainwindow.ui
 

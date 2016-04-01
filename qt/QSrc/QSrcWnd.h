@@ -14,15 +14,19 @@ namespace Ui
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class QSrcWnd : public QMainWindow
 {
     Q_OBJECT
 
   public:
-    explicit MainWindow(QWidget* parent = 0);
-    ~MainWindow();
+    explicit QSrcWnd(QWidget* parent = 0);
+    ~QSrcWnd();
 
     void init();
+
+  private:
+    void InitModel();
+    void InitTreeView();
 
   private slots:
     void on_treeView_clicked(const QModelIndex& index);
